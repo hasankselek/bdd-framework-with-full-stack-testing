@@ -8,7 +8,7 @@ import org.testng.annotations.DataProvider;
         features = {"src/test/resources/features/api"},
         glue = { "automation.stepdefinitions.api" },
         plugin = { "pretty"},
-        tags = "@api11",
+        tags = "@regression",
         dryRun = false,
         publish = false
 )

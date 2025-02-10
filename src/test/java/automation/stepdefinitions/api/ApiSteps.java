@@ -1,17 +1,14 @@
 package automation.stepdefinitions.api;
 
 import base.BaseTest;
-import com.github.javafaker.Faker;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.en.*;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import utils.API_Methods;
+import utils.ConfigurationReader;
 
 import java.util.Map;
 
@@ -20,9 +17,6 @@ import static io.restassured.RestAssured.given;
 public class ApiSteps extends BaseTest {
 
     public static String requestBody;
-    public String fake_name = faker.name().firstName();
-    public String fake_email = faker.internet().emailAddress();
-    public String fake_password = "Ac!2" + faker.internet().password();
 
     @Given("I set the base API URL")
     public void ı_set_the_base_apı_url() {
@@ -31,11 +25,11 @@ public class ApiSteps extends BaseTest {
     }
 
     @Given("The api user sends a {string} request to {string} endpoint")
-    public void the_api_user_sends_a_request_and_saves_the_returned_response(String httpMethod,String endpoint) {
+    public void the_api_user_sends_a_request_and_saves_the_returned_response(String httpMethod, String endpoint) {
         if (requestBody == null || requestBody.isEmpty()) {
-            API_Methods.sendRequest(httpMethod, null,endpoint);
+            API_Methods.sendRequest(httpMethod, null, endpoint);
         } else {
-            API_Methods.sendRequest(httpMethod,requestBody, endpoint);
+            API_Methods.sendRequest(httpMethod, requestBody, endpoint);
         }
 
     }
@@ -58,16 +52,18 @@ public class ApiSteps extends BaseTest {
     }
 
     @When("The api user sends a POST request to {string} endpoint with search query:")
-    public void theApiUserSendsARequestToEndpointWithSearchQuery(String endpoint,DataTable dataTable) {
+    public void theApiUserSendsARequestToEndpointWithSearchQuery(String endpoint, DataTable dataTable) {
         Map<String, String> searchData = dataTable.asMap(String.class, String.class);
-        response = given()
-                .formParam("search_product", searchData.get("search_product"))
-                .when()
-                .post(endpoint);
+        response = given().formParam("search_product", searchData.get("search_product")).when().post(endpoint);
     }
 
-    @When("The api user sends a POST request to {string} endpoint with with credentials:")
-    public void theApiUserSendsAPOSTRequestToEndpointWithWithCredentials(String endpoint,DataTable dataTable) {
+    @When("The api user sends a POST request to {string} endpoint without search query:")
+    public void theApiUserSendsAPOSTRequestToEndpointWithoutSearchQuery(String endpoint) {
+        response = given().contentType("application/json").when().post(endpoint);
+    }
+
+    @When("The api user sends a POST request to {string} endpoint with credentials:")
+    public void theApiUserSendsAPOSTRequestToEndpointWithCredentials(String endpoint, DataTable dataTable) {
         Map<String, String> credentialsData = dataTable.asMap(String.class, String.class);
         response = given()
                 .formParam("email", credentialsData.get("email"))
@@ -76,17 +72,33 @@ public class ApiSteps extends BaseTest {
                 .post(endpoint);
     }
 
+    @When("The api user sends a POST request to {string} endpoint without email credentials:")
+    public void theApiUserSendsAPOSTRequestToEndpointWithoutEmailCredentials(String endpoint, DataTable dataTable) {
 
-    @When("The api user sends a POST request to {string} endpoint with with user information:")
-    public void theApiUserSendsAPOSTRequestToEndpointWithWithUserInformation(String endpoint,DataTable dataTable) {
+        Map<String, String> credentialsData = dataTable.asMap(String.class, String.class);
+        response = given()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.MULTIPART)
+                .multiPart("password", credentialsData.get("password"))
+                .when()
+                .post(endpoint);
+    }
+
+
+    @When("The api user sends a POST request to {string} endpoint with user information:")
+    public void theApiUserSendsAPOSTRequestToEndpointWithUserInformation(String endpoint, DataTable dataTable) {
+
+        ConfigurationReader.set("userName", faker.name().firstName());
+        ConfigurationReader.set("email", faker.internet().emailAddress());
+        ConfigurationReader.set("password", "Ac!2" + faker.internet().password());
 
         Map<String, String> userInformation = dataTable.asMap(String.class, String.class);
 
         RequestSpecification request = RestAssured.given()
                 .contentType(ContentType.MULTIPART)
-                .multiPart("name", fake_name)
-                .multiPart("email", fake_email)
-                .multiPart("password", fake_password);
+                .multiPart("name", ConfigurationReader.get("userName"))
+                .multiPart("email", ConfigurationReader.get("email"))
+                .multiPart("password", ConfigurationReader.get("password"));
 
         // Map içindeki tüm verileri tek seferde multiPart'a ekleyelim
         userInformation.forEach(request::multiPart);
@@ -94,4 +106,64 @@ public class ApiSteps extends BaseTest {
         response = request.when().post(endpoint);
     }
 
+
+    @When("The api user sends a DELETE request to {string} endpoint")
+    public void theApiUserSendsADELETERequestToEndpoint(String endpoint) {
+
+        response = given().contentType("application/json").when().delete(endpoint);
+    }
+
+    @When("The api user sends a DELETE request to {string} endpoint with user information:")
+    public void theApiUserSendsADELETERequestToEndpointWithUserInformation(String endpoint) {
+        response = RestAssured.given()
+                .contentType(ContentType.MULTIPART)
+                .multiPart("email", ConfigurationReader.get("email"))
+                .multiPart("password", ConfigurationReader.get("password"))
+                .when()
+                .delete(endpoint);
+
+
+        //clear configurationReader
+        ConfigurationReader.set("userName", "");
+        ConfigurationReader.set("email", "");
+        ConfigurationReader.set("password", "");
+
+
+    }
+
+    @When("The api user sends a PUT request to {string} endpoint update with user information:")
+    public void theApiUserSendsAPUTRequestToEndpointUpdateWithUserInformation(String endpoint, DataTable dataTable) {
+
+        Map<String, String> userInformation = dataTable.asMap(String.class, String.class);
+
+        RequestSpecification request = RestAssured.given()
+                .contentType(ContentType.MULTIPART)
+                .multiPart("name", ConfigurationReader.get("userName"))
+                .multiPart("email", ConfigurationReader.get("email"))
+                .multiPart("password", ConfigurationReader.get("password"));
+
+        // Map içindeki tüm verileri tek seferde multiPart'a ekleyelim
+        userInformation.forEach(request::multiPart);
+
+        response = request.when().put(endpoint);
+
+
+    }
+
+    @When("The api user sends a GET request to {string} endpoint with email")
+    public void theApiUserSendsAGETRequestToEndpointWithEmail(String endpoint) {
+
+        response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .queryParam("email", ConfigurationReader.get("email"))
+                .when()
+                .get(endpoint);
+    }
+
+    @And("The api user validate username")
+    public void theApiUserValidateUsername() {
+
+        Assert.assertEquals(ConfigurationReader.get("userName"), response.jsonPath().getString("user.name"));
+    }
 }

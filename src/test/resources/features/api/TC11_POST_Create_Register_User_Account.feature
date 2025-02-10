@@ -1,10 +1,11 @@
+@regression
 Feature: Create and Register User Account
 
   @api11
   Scenario: POST To Create/Register User Account
 
     Given I set the base API URL
-    When The api user sends a POST request to "/createAccount" endpoint with with user information:
+    When The api user sends a POST request to "/createAccount" endpoint with user information:
       | title         | Mr                         |
       | birth_day     | 15                         |
       | birth_month   | 6                          |
@@ -22,5 +23,3 @@ Feature: Create and Register User Account
     Then The api user verifies that the status code is 200.
     And The api user verifies that the "responseCode" information in the response body is "201".
     And The api user verifies that the "message" information in the response body is "User created!".
-
-

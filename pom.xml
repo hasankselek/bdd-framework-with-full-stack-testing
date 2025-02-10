@@ -21,7 +21,6 @@
         <assertj.version>3.24.2</assertj.version>
         <extentreports.version>5.1.1</extentreports.version>
         <testng.version>7.8.0</testng.version>
-        <yalmversion>2.0</yalmversion>
     </properties>
 
     <developers>
@@ -145,12 +144,6 @@
             <version>20231013</version>
         </dependency>
 
-        <!-- YAML Parsing -->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${yalmversion}</version>
-        </dependency>
 
     </dependencies>
 

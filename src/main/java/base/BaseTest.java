@@ -1,18 +1,15 @@
 package base;
 
 import com.github.javafaker.Faker;
-import utils.ConfigLoader;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import utils.RequestBuilder;
-import utils.TestData;
 
 import java.util.HashMap;
 
 public abstract class BaseTest {
 
-    protected static ConfigLoader configLoader;
     protected static JsonPath repJP;
     protected static Response response;
     protected static HashMap map;
@@ -24,7 +21,6 @@ public abstract class BaseTest {
         builder = new RequestBuilder();
         requestBody = new JSONObject();
         map = new HashMap<>();
-        configLoader = new ConfigLoader();
         faker = new Faker();
     }
 }
