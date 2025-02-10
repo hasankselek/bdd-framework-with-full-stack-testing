@@ -1,12 +1,15 @@
 package automation.stepdefinitions.api;
 
 import base.BaseTest;
+import com.github.javafaker.Faker;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
-import org.json.JSONObject;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import utils.API_Methods;
 
@@ -17,9 +20,13 @@ import static io.restassured.RestAssured.given;
 public class ApiSteps extends BaseTest {
 
     public static String requestBody;
+    public String fake_name = faker.name().firstName();
+    public String fake_email = faker.internet().emailAddress();
+    public String fake_password = "Ac!2" + faker.internet().password();
 
     @Given("I set the base API URL")
     public void ı_set_the_base_apı_url() {
+
         RestAssured.baseURI = "https://automationexercise.com/api";
     }
 
@@ -68,4 +75,23 @@ public class ApiSteps extends BaseTest {
                 .when()
                 .post(endpoint);
     }
+
+
+    @When("The api user sends a POST request to {string} endpoint with with user information:")
+    public void theApiUserSendsAPOSTRequestToEndpointWithWithUserInformation(String endpoint,DataTable dataTable) {
+
+        Map<String, String> userInformation = dataTable.asMap(String.class, String.class);
+
+        RequestSpecification request = RestAssured.given()
+                .contentType(ContentType.MULTIPART)
+                .multiPart("name", fake_name)
+                .multiPart("email", fake_email)
+                .multiPart("password", fake_password);
+
+        // Map içindeki tüm verileri tek seferde multiPart'a ekleyelim
+        userInformation.forEach(request::multiPart);
+
+        response = request.when().post(endpoint);
+    }
+
 }
