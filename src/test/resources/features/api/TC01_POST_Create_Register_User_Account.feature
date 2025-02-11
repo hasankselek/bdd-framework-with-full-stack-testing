@@ -2,7 +2,7 @@
 Feature: Create and Register User Account
 
   @api11
-  Scenario: POST To Create/Register User Account
+  Scenario:API 11 : POST To Create/Register User Account
 
     Given I set the base API URL
     When The api user sends a POST request to "/createAccount" endpoint with user information:

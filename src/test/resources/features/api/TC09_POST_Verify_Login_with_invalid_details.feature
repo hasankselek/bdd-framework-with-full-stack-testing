@@ -6,8 +6,8 @@ Feature: Verify Loggin
 
     Given I set the base API URL
     When The api user sends a POST request to "/verifyLogin" endpoint with credentials:
-      | email    | asdasdas@gmail.com |
-      | password | test123                    |
+      | email    | testtestest123@gmail.com |
+      | password | testtestestest123        |
     Then The api user verifies that the status code is 200.
     And The api user verifies that the "responseCode" information in the response body is "404".
     And The api user verifies that the "message" information in the response body is "User not found!".

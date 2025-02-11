@@ -10,6 +10,7 @@ import org.testng.Assert;
 import utils.API_Methods;
 import utils.ConfigurationReader;
 
+import javax.xml.crypto.Data;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
@@ -66,8 +67,10 @@ public class ApiSteps extends BaseTest {
     public void theApiUserSendsAPOSTRequestToEndpointWithCredentials(String endpoint, DataTable dataTable) {
         Map<String, String> credentialsData = dataTable.asMap(String.class, String.class);
         response = given()
-                .formParam("email", credentialsData.get("email"))
-                .formParam("password", credentialsData.get("password"))
+                .accept(ContentType.JSON)
+                .contentType(ContentType.MULTIPART)
+                .multiPart("email",credentialsData.get("email"))
+                .multiPart("password",credentialsData.get("password"))
                 .when()
                 .post(endpoint);
     }
@@ -165,5 +168,18 @@ public class ApiSteps extends BaseTest {
     public void theApiUserValidateUsername() {
 
         Assert.assertEquals(ConfigurationReader.get("userName"), response.jsonPath().getString("user.name"));
+    }
+
+    @When("The api user sends a POST request to {string} endpoint with valid credentials:")
+    public void theApiUserSendsAPOSTRequestToEndpointWithValidCredentials(String endpoint) {
+        response = given()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.MULTIPART)
+                .multiPart("email",ConfigurationReader.get("email"))
+                .multiPart("password",ConfigurationReader.get("password"))
+                .when()
+                .post(endpoint);
+
+
     }
 }
