@@ -1,0 +1,5 @@
+00:30:15.553 [main] INFO  org.testng.internal.Utils - [TestNG] Running:
+  /Users/hasan/Library/Caches/JetBrains/IdeaIC2024.2/temp-testng-customsuite.xml
+
+00:30:22.224 [main] INFO  base.BasePage - Navigated to URL: url
+00:30:22.242 [main] INFO  pages.ui.HomePage - Correct URL: https://automationexercise.com/

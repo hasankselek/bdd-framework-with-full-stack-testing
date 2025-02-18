@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
-@Log4j2
+@Slf4j
 public class HomePage extends BasePage {
 
     public void assertHomePage() {

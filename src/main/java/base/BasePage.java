@@ -1,6 +1,7 @@
 package base;
 
-import lombok.extern.log4j.Log4j2;
+
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -8,13 +9,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import utils.ConfigurationReader;
 import utils.Driver;
 
 import java.time.Duration;
 
-@Log4j2
+@Slf4j
 public abstract class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
