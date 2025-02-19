@@ -1,6 +1,7 @@
 package utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class Driver {
 
 
@@ -32,7 +34,7 @@ public class Driver {
     public static WebDriver getDriver() {
         // if this thread doesn't have a web driver yet - create it and add to pool
         if (driverPool.get() == null) {
-            System.out.println("TRYING TO CREATE DRIVER");
+            log.info("TRYING TO CREATE DRIVER");
             // this line will tell which browser should open based on the value from
             // properties file
 
@@ -129,11 +131,12 @@ public class Driver {
 
     public static void closeDriver() {
         try {
+            log.info("DRIVER CLOSING");
             driverPool.get().quit();
             driverPool.remove();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.error("DRIVER CLOSING ERROR = " , e.getCause());
         }
         finally {
             if (driverPool.get() != null) {

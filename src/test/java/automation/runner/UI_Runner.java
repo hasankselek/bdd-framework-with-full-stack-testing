@@ -8,7 +8,7 @@ import org.testng.annotations.DataProvider;
         features = {"src/test/resources/features/ui"},
         glue = { "automation.stepdefinitions.ui" },
         plugin = { "pretty"},
-        tags = "@smoke",
+        tags = "@test",
         dryRun = false,
         publish = false
 )

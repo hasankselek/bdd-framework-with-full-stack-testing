@@ -1,6 +1,7 @@
 package base;
 
 
+import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
@@ -18,9 +19,11 @@ import java.time.Duration;
 public abstract class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
+    protected Faker faker;
 
     public BasePage() {
         this.driver = Driver.getDriver();
+        this.faker = new Faker();
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }

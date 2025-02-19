@@ -1,5 +1,13 @@
-00:30:15.553 [main] INFO  org.testng.internal.Utils - [TestNG] Running:
+16:30:53.079 [main] INFO  org.testng.internal.Utils - [TestNG] Running:
   /Users/hasan/Library/Caches/JetBrains/IdeaIC2024.2/temp-testng-customsuite.xml
 
-00:30:22.224 [main] INFO  base.BasePage - Navigated to URL: url
-00:30:22.242 [main] INFO  pages.ui.HomePage - Correct URL: https://automationexercise.com/
+16:30:53.208 [main] INFO  utils.Driver - TRYING TO CREATE DRIVER
+16:30:54.715 [main] INFO  base.BasePage - Navigated to URL: url
+16:30:54.845 [main] INFO  pages.ui.HomePage - Correct URL: https://automationexercise.com/
+16:30:58.878 [main] ERROR base.BasePage - Error clicking element: Error communicating with the remote browser. It may have died.
+Build info: version: '4.28.1', revision: '73f5ad48a2'
+System info: os.name: 'Mac OS X', os.arch: 'aarch64', os.version: '15.3.1', java.version: '17.0.11'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [fbb1f3f29b4a8d2922c77d9e408bc0c3, findElement [value, using]]
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 133.0.6943.99, chrome: {chromedriverVersion: 133.0.6943.126 (cffa127ce7b..., userDataDir: /var/folders/dw/ns1j0c4n77v...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:55960}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: mac, proxy: Proxy(), se:cdp: ws://localhost:55960/devtoo..., se:cdpVersion: 133.0.6943.99, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: fbb1f3f29b4a8d2922c77d9e408bc0c3
